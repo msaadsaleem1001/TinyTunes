@@ -1,15 +1,13 @@
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:TinyTunes/res/components/Custom%20AppBar/custom_appbar.dart';
+import 'package:TinyTunes/res/components/Custom%20Divider/custom_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../Data/Response/status.dart';
-import '../../../res/app_colors/app_colors.dart';
-import '../../../res/components/Custom AppBar/brukul_appbar.dart';
-import '../../../res/components/Custom Divider/custom_divider.dart';
 import '../../../res/components/Custom Thumbnail/custom_thumbnail.dart';
-import '../../../res/components/Error Widget/error_exception_widget.dart';
 import '../../../res/components/Loading List/app_loading_effect.dart';
+import '../../../res/utils/get video thumbnail/get_video_thumbnail.dart';
 import '../../home_feed/bloc/home_bloc.dart';
 import '../../home_feed/bloc/home_event.dart';
 import '../../home_feed/bloc/home_state.dart';
@@ -83,7 +81,7 @@ class _VideoPlayerClassState extends State<VideoPlayerClass> {
                 appBar: state.isFullScreen
                     ? const PreferredSize(
                         preferredSize: Size(0, 0), child: SizedBox())
-                    : BrukulAppBar.brukulAppBar(context),
+                    : TinyTunesAppBars.tinyTunesAppBar(context),
                 body: YoutubePlayerScaffold(
                   enableFullScreenOnVerticalDrag: false,
                   autoFullScreen: false,
@@ -93,65 +91,42 @@ class _VideoPlayerClassState extends State<VideoPlayerClass> {
                     return Column(
                       children: [
                         player,
-                        const CustomDivider(),
                         Flexible(child: BlocBuilder<HomeBloc, HomeState>(
                           // buildWhen: (previous, current) => previous.feedList.length != current.feedList.length,
                           builder: (context, state) {
                             if (state.status == Status.COMPLETED) {
-                              return CustomMaterialIndicator(
-                                  durations: const RefreshIndicatorDurations(
-                                      completeDuration:
-                                          Duration(milliseconds: 1000)),
-                                  onRefresh: () async => context
-                                      .read<HomeBloc>()
-                                      .add(const GetVideos()),
-                                  indicatorBuilder: (BuildContext context,
-                                      IndicatorController controller) {
-                                    return const Center(
-                                        child: SizedBox(
-                                            width: 30,
-                                            height: 30,
-                                            child: CircularProgressIndicator(
-                                                strokeWidth: 4,
-                                                color: AppColors.appWhite)));
-                                  },
-                                  child: ListView.separated(
-                                    physics: const ClampingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: state.feedList.length,
-                                    itemBuilder: (context, index) {
-                                      if (state.feedList[index].url ==
-                                          widget.currentUrl) {
-                                        return const SizedBox();
-                                      } else {
-                                        return CustomThumbnail(
-                                            isPlayerScreen: true,
-                                            thumbnail:
-                                                state.feedList[index].thumbnail,
-                                            url:
-                                                state.feedList[index].url);
-                                      }
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      if (state.feedList[index].url ==
-                                          widget.currentUrl) {
-                                        return const SizedBox();
-                                      } else {
-                                        return const CustomDivider();
-                                      }
-                                    },
-                                  ));
+                              return ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                physics: const ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: state.feedList.length,
+                                itemBuilder: (context, index) {
+                                  if (state.feedList[index].url ==
+                                      widget.currentUrl) {
+                                    return const SizedBox();
+                                  } else {
+                                    return CustomThumbnail(
+                                        isPlayer: true,
+                                        thumbnail:
+                                        GetVideoThumbnail.getThumbnail(
+                                            videoId: state
+                                                .feedList[index]
+                                                .videoId),
+                                        url: state.feedList[index].url, duration: state.feedList[index].duration);
+                                  }
+                                },
+                                separatorBuilder: (context, index) {
+                                  if (state.feedList[index].url ==
+                                      widget.currentUrl) {
+                                    return const SizedBox();
+                                  } else {
+                                    return CustomDivider.divider();                                  }
+                                },
+                              );
                             } else if (state.status == Status.LOADING) {
-                              return const FeedLoadingEffect();
+                              return const FeedLoadingEffect(isPlayer: true);
                             } else {
-                              return ExceptionMessageWidget(
-                                  isPlayerScreen: true,
-                                  msg: state.errorMsg,
-                                  onTap: () {
-                                    context
-                                        .read<HomeBloc>()
-                                        .add(const GetVideos());
-                                  });
+                              return const FeedLoadingEffect(isPlayer: true);
                             }
                           },
                         ))

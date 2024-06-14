@@ -2,12 +2,9 @@
 // Here we will define all assets of the app.
 class AppAssets {
 
-  static const logo = "assets/images/app_icon.png";
-  static const errorImage = "assets/images/error_dark.svg";
-  static const videoLoading = "assets/images/videoLoading.jpg";
-  static const videoErrorPlaceHolder = "assets/images/video_error.jpg";
-  static const placeHolder = "assets/images/placeHolder.jpg";
-  static const shorFormat = "assets/images/short_format.svg";
-  static const shorFormatSelected = "assets/images/short_format_selected.svg";
+  static const textLogo = "assets/images/name_logo.png";
+  static const logoTransparent = "assets/images/logo.png";
+  static const logo = "assets/images/icon.jpg";
+  static const bgImage = "assets/images/bg_image.jpg";
 
 }

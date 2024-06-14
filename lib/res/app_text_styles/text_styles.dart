@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+
+import '../app_colors/app_colors.dart';
 // App Text Styles class.
 class AppTextStyles {
 
@@ -29,6 +31,16 @@ class AppTextStyles {
         color: color,
         fontSize: fontSize,
         fontWeight: FontWeight.w200,
+        letterSpacing: 1
+    );
+  }
+
+  static TextStyle categoryStyle({double fontSize = 14, Color color = AppColors.darkModeAppBarColor}){
+    return TextStyle(
+        color: color,
+        fontFamily: 'Dosis-Regular',
+        fontSize: fontSize,
+        fontWeight: FontWeight.bold,
         letterSpacing: 1
     );
   }

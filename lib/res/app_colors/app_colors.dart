@@ -19,6 +19,7 @@ class AppColors {
   static const Color normalTextColorLight = Color(0xff2a2a2a);
   static const Color normalTextColorDark = Color(0xffa4a4a4);
 
+
   static const Color menuColor = Color(0xFF5E5E5E);
 
   // Home icon color

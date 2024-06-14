@@ -10,7 +10,7 @@ class AppThemeData {
       scaffoldBackgroundColor: AppColors.lightModeScaffoldColor,
       primarySwatch: Colors.green,
       brightness: Brightness.light,
-      fontFamily: 'Dosis',
+      fontFamily: 'Dosis-Regular',
       appBarTheme: AppBarTheme(
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.appWhite, size: 25),
@@ -49,7 +49,7 @@ class AppThemeData {
       scaffoldBackgroundColor: AppColors.darkModeScaffoldColor,
       primarySwatch: Colors.grey,
       brightness: Brightness.dark,
-      fontFamily: 'Dosis',
+      fontFamily: 'Dosis-Regular',
       appBarTheme: AppBarTheme(
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.appWhite, size: 25),

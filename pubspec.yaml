@@ -1,4 +1,4 @@
-name: tiny_tunes
+name: TinyTunes
 description: "TinyTunes"
 publish_to: 'none'
 
@@ -20,11 +20,11 @@ dependencies:
   youtube_player_iframe: ^5.1.2
   flutter_svg: ^2.0.10+1
   device_info_plus: ^10.1.0
-  custom_refresh_indicator: ^3.1.0
   firebase_core: ^3.0.0
   firebase_analytics: ^11.0.0
   fluttertoast: ^8.2.5
   supabase_flutter: ^2.5.4
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:

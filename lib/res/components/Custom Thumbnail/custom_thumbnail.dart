@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import '../../../Firebase Analytics/firebase_analytics.dart';
 import '../../../features/home_feed/bloc/home_bloc.dart';
-import '../../../features/home_feed/bloc/home_event.dart';
-import '../../routes/app_route_constants.dart';
-import '../../utils/toast/toast.dart';
+import '../../../features/home_feed/bloc/home_state.dart';
+import '../../app_colors/app_colors.dart';
 
 class CustomThumbnail extends StatefulWidget {
-  final bool isPlayerScreen;
+  final bool isPlayer;
   final String url;
   final String thumbnail;
+  final String duration;
   const CustomThumbnail(
       {super.key,
       required this.url,
       required this.thumbnail,
-      required this.isPlayerScreen});
+      required this.isPlayer,
+      required this.duration});
 
   @override
   State<CustomThumbnail> createState() => _CustomThumbnailState();
@@ -26,92 +25,59 @@ class _CustomThumbnailState extends State<CustomThumbnail> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width * 1;
+    // final width = MediaQuery.sizeOf(context).width * 1;
     // final height = MediaQuery.sizeOf(context).height * 1;
-    return InkWell(
-      enableFeedback: false,
-      onTap: () {
-        if (isVideoFound) {
-          if (widget.isPlayerScreen) {
-            FirebaseAnalyticsEvents.onTapOnVideoEvent();
-            GoRouter.of(context).pop();
-            GoRouter.of(context).pushNamed(AppRouteConstants.playerRoute,
-                pathParameters: {'url': widget.url});
-          } else {
-            FirebaseAnalyticsEvents.onTapOnVideoEvent();
-            context
-                .read<HomeBloc>()
-                .add(const OnScreenChange(isFirstScreen: false));
-            GoRouter.of(context).pushNamed(AppRouteConstants.playerRoute,
-                pathParameters: {'url': widget.url});
-          }
-        } else {
-          AppToast.showToast(context: context, message: 'Video unavailable right now!');
-        }
-      },
-      child: Container(
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
-        width: width,
-        height: 220,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(widget.thumbnail),
-            fit: BoxFit.cover,
-            onError: (obj, error){
-              isVideoFound = false;
-            }
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: (){},
+          child: Container(
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
+            width: widget.isPlayer? 200 : 300,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(widget.thumbnail),
+                  fit: BoxFit.cover,
+                  onError: (obj, error) {
+                    isVideoFound = false;
+                  }),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Stack(
+              children: [
+                // Positioned(
+                //     top: 0,
+                //     child: isVideoFound
+                //         ? SizedBox(
+                //       width: widget.isPlayer? 300 : 400,
+                //       height: widget.isPlayer? 200 : 300,
+                //       child: const Center(
+                //           child: Center(
+                //             child: Icon(Icons.play_arrow,
+                //                 size: 40, color: AppColors.appWhite),
+                //           )),
+                //     )
+                //         : const SizedBox()),
+                Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: isVideoFound
+                        ? Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      height: 20,
+                      decoration:
+                      const BoxDecoration(color: AppColors.appBlack),
+                      child: Center(
+                        child: Text(widget.duration),
+                      ),
+                    )
+                        : const SizedBox()),
+              ],
+            )
           ),
-        ),
-        // child: Stack(
-        //   children: [
-        //     Positioned.fill(
-        //         child: FadeInImage(
-        //       fadeInDuration: Duration(milliseconds: 50),
-        //       fadeOutDuration: Duration(milliseconds: 50),
-        //       placeholder: const AssetImage(AppAssets.placeHolder),
-        //       image: NetworkImage(widget.thumbnail),
-        //       fit: BoxFit.cover,
-        //       imageErrorBuilder: (context, object, error) {
-        //         isVideoFound = false;
-        //         return Container(
-        //           padding: const EdgeInsets.only(bottom: 20),
-        //           decoration: const BoxDecoration(
-        //               image: DecorationImage(
-        //                   image: AssetImage(AppAssets.videoErrorPlaceHolder))),
-        //           child: Column(
-        //             mainAxisAlignment: MainAxisAlignment.end,
-        //             crossAxisAlignment: CrossAxisAlignment.center,
-        //             children: [
-        //               Text('Video Not Found',
-        //                   style: AppTextStyles.subTitleStyle(color: AppColors.appBlack))
-        //             ],
-        //           ),
-        //         );
-        //       },
-        //     )),
-        //     // Positioned(
-        //     //     top: 0,
-        //     //     child: isVideoFound
-        //     //         ? SizedBox(
-        //     //       width: width,
-        //     //       height: 220,
-        //     //       child: const Center(
-        //     //           child: CircleAvatar(
-        //     //               radius: 20,
-        //     //               backgroundColor: AppColors.appWhite,
-        //     //               child: Center(
-        //     //                 child: Icon(Icons.play_arrow,
-        //     //                     size: 30, color: AppColors.darkModeScaffoldColor),
-        //     //               )
-        //     //           )
-        //     //       ),
-        //     //     )
-        //     //         : const SizedBox()
-        //     // ),
-        //   ],
-        // ),
-      ),
+        );
+      },
     );
   }
 }

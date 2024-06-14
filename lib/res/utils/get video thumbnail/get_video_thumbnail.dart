@@ -8,8 +8,7 @@ class GetVideoThumbnail {
     return thumbnailUrl;
   }
 
-  static String getYouTubeWatchUrl(String url) {
-    final String id = convertUrlToId(url)!;
+  static String getYouTubeWatchUrl(String id) {
     return 'https://www.youtube.com/watch?v=$id';
   }
 

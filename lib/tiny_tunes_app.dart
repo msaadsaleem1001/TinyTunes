@@ -1,9 +1,11 @@
+import 'package:TinyTunes/features/confirm/bloc/confirm_bloc.dart';
+import 'package:TinyTunes/features/setting/bloc/setting_bloc.dart';
+import 'package:TinyTunes/features/splash/bloc/splash_bloc.dart';
+import 'package:TinyTunes/res/routes/app_route_configuration.dart';
+import 'package:TinyTunes/res/theme_data/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tiny_tunes/res/routes/app_route_configuration.dart';
-import 'package:tiny_tunes/res/theme_data/theme_data.dart';
 import 'features/Player/bloc/player_bloc.dart';
-import 'features/Shorts format Scroller/bloc/short_bloc.dart';
 import 'features/home_feed/bloc/home_bloc.dart';
 
 class TinyTunes extends StatelessWidget {
@@ -12,9 +14,11 @@ class TinyTunes extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => SplashBloc()),
+          BlocProvider(create: (_) => ConfirmBloc()),
           BlocProvider(create: (_) => HomeBloc()),
+          BlocProvider(create: (_) => SettingBloc()),
           BlocProvider(create: (_) => AppPlayerBloc()),
-          BlocProvider(create: (_) => ShortsBloc()),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,

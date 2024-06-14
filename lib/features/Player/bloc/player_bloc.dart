@@ -1,6 +1,6 @@
+import 'package:TinyTunes/features/Player/bloc/player_event.dart';
+import 'package:TinyTunes/features/Player/bloc/player_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:tiny_tunes/features/Player/bloc/player_event.dart';
-import 'package:tiny_tunes/features/Player/bloc/player_state.dart';
 
 class AppPlayerBloc extends Bloc<AppPlayerEvent, AppPlayerState> {
 

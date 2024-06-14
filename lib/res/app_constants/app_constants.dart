@@ -9,6 +9,7 @@ class AppConstants {
   static const String tableName = 'tiny_tunes';
 
   // Table column names.
+  static const String id = 'id';
   static const String title = 'title';
   static const String url = 'url';
   static const String duration = 'duration';
@@ -16,11 +17,13 @@ class AppConstants {
   static const String lang = 'lang';
   static const String videoId = 'video_id';
   static const String channelName = 'channel_name';
+  static const String createdAt = 'created_at';
 
   static const List<String> langList = ['ENGLISH', 'HINDI'];
   static const Map<String, String> langListValue = {'ENGLISH': 'ENG', 'HINDI': 'HI'};
 
   static const List<String> categoryList = ['ISLAMIC', 'FUN LEARNING', 'CRAFTS', 'POEMS', 'TOYS', 'ANIMALS', 'OTHERS'];
+  static const List<String> categoryListS = ['', 'All', 'Islamic', 'Fun Learning', 'Crafts', 'Poems', 'Toys', 'Animals', 'Others'];
 
 
 }

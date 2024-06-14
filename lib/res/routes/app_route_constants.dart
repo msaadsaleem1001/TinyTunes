@@ -3,8 +3,8 @@ class AppRouteConstants{
 
   static const String homeRoute = 'home';
 
-  static const String playerRoute = 'player';
+  static const String splash = 'splash';
 
-  static const String shorts = 'shorts';
+  static const String playerRoute = 'player';
 
 }

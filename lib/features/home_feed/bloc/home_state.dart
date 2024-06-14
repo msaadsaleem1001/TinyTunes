@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:tiny_tunes/Models/videos_modal/video_modal.dart';
 import '../../../Data/Response/status.dart';
+import '../../../Models/videos_modal/video_modal.dart';
 
 class HomeState extends Equatable {
   final List<VideoModal> feedList;

@@ -1,8 +1,9 @@
+import 'package:TinyTunes/res/app_urls/app_urls.dart';
+import 'package:TinyTunes/tiny_tunes_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tiny_tunes/res/app_urls/app_urls.dart';
-import 'package:tiny_tunes/tiny_tunes_app.dart';
 import 'Firebase Analytics/firebase_analytics.dart';
 
 Future<void> main() async {
@@ -18,5 +19,9 @@ Future<void> main() async {
     url: AppUrls.supabaseUrl,
     anonKey: AppUrls.supabaseAnonKey,
   );
-  runApp(const TinyTunes());
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
+      .then((_) {
+    runApp(const TinyTunes());
+  });
 }

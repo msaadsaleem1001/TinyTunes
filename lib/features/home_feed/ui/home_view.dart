@@ -1,15 +1,13 @@
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:TinyTunes/res/app_assets/app_assets.dart';
+import 'package:TinyTunes/res/components/Custom%20AppBar/custom_appbar.dart';
+import 'package:TinyTunes/res/components/Custom%20Divider/custom_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../Data/Response/status.dart';
-import '../../../res/app_colors/app_colors.dart';
-import '../../../res/components/Bottom bar/bottom_bar.dart';
-import '../../../res/components/Custom AppBar/brukul_appbar.dart';
-import '../../../res/components/Custom Divider/custom_divider.dart';
 import '../../../res/components/Custom Thumbnail/custom_thumbnail.dart';
-import '../../../res/components/Error Widget/error_exception_widget.dart';
 import '../../../res/components/Loading List/app_loading_effect.dart';
+import '../../../res/utils/get video thumbnail/get_video_thumbnail.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
@@ -22,8 +20,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
-  // final _androidAppRetain = const MethodChannel("android_app_retain");
-
   @override
   void initState() {
     super.initState();
@@ -56,81 +52,108 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // final width = MediaQuery.sizeOf(context).width * 1;
-    // final height = MediaQuery.sizeOf(context).height * 1;
+    final width = MediaQuery.sizeOf(context).width * 1;
+    final height = MediaQuery.sizeOf(context).height * 1;
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return BackButtonListener(
-            onBackButtonPressed: () async {
-              if (state.isFirstScreen) {
-                context.read<HomeBloc>().add(const GetVideos());
-                // _androidAppRetain.invokeMethod("sendToBackground");
-                // BrukulDialog.showDialogForMinimizeApp(context);
-                return true;
-              } else {
-                GoRouter.of(context).pop();
-                context.read<HomeBloc>().add(const OnScreenChange(isFirstScreen: true));
-                return true;
-              }
-            },
-            child: Scaffold(
-                bottomNavigationBar: const CustomBottomBar(),
-                body: SafeArea(
-                    child: NestedScrollView(
-                        headerSliverBuilder:
-                            (BuildContext context, bool innerBoxIsScrolled) {
-                          return <Widget>[
-                            SliverBrukulAppBar(
-                              innerBoxIsScrolled: innerBoxIsScrolled,
-                            )
-                          ];
-                        },
-                        body: CustomMaterialIndicator(
-                          durations: const RefreshIndicatorDurations(
-                              completeDuration: Duration(milliseconds: 1000)),
-                          onRefresh: () async =>
-                              context.read<HomeBloc>().add(const GetVideos()),
-                          child: BlocBuilder<HomeBloc, HomeState>(
-                            // buildWhen: (previous, current) =>
-                            //     previous.feedList.length != current.feedList.length,
-                            builder: (context, state) {
-                              if (state.status == Status.COMPLETED) {
-                                return ListView.separated(
-                                    itemCount: state.feedList.length,
-                                    itemBuilder: (context, index) {
-                                      return CustomThumbnail(
-                                          isPlayerScreen: false,
+          onBackButtonPressed: () async {
+            if (state.isFirstScreen) {
+              context.read<HomeBloc>().add(const ShuffleList());
+              return true;
+            } else {
+              GoRouter.of(context).pop();
+              context
+                  .read<HomeBloc>()
+                  .add(const OnScreenChange(isFirstScreen: true));
+              context
+                  .read<HomeBloc>()
+                  .add(const OnChangeBarView(bottomBarIndex: 0));
+              return true;
+            }
+          },
+          child: Scaffold(
+            body: Container(
+              width: width,
+              height: height,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    opacity: .6,
+                    image: AssetImage(AppAssets.bgImage), fit: BoxFit.cover),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TinyTunesAppBars.homeAppBar(context),
+                    BlocBuilder<HomeBloc, HomeState>(
+                      builder: (context, state) {
+                        if (state.status == Status.COMPLETED) {
+                          return SizedBox(
+                            width: width,
+                            height: height * .45,
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: state.feedList.length,
+                                itemBuilder: (context, index) {
+                                  if (index == 0) {
+                                    return Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 30),
+                                        child: CustomThumbnail(
+                                          isPlayer: false,
                                           url: state.feedList[index].url,
-                                          thumbnail: state.feedList[index].thumbnail);
-                                    },
-                                    separatorBuilder: (context, val) {
-                                      return const CustomDivider();
-                                    });
-                              } else if (state.status == Status.LOADING) {
-                                return const FeedLoadingEffect();
-                              } else {
-                                return ExceptionMessageWidget(
-                                    isPlayerScreen: false,
-                                    msg: state.errorMsg,
-                                    onTap: () {
-                                      context
-                                          .read<HomeBloc>()
-                                          .add(const GetVideos());
-                                    });
-                              }
-                            },
-                          ),
-                          indicatorBuilder: (BuildContext context,
-                              IndicatorController controller) {
-                            return const Center(
-                                child: SizedBox(
-                                    width: 30,
-                                    height: 30,
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 4,
-                                        color: AppColors.appWhite)));
-                          },
-                        )))));
+                                          thumbnail:
+                                              GetVideoThumbnail.getThumbnail(
+                                                  videoId: state
+                                                      .feedList[index].videoId),
+                                          duration:
+                                              state.feedList[index].duration,
+                                        ));
+                                  } else if (index ==
+                                      state.feedList.length - 1) {
+                                    return Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 30),
+                                        child: CustomThumbnail(
+                                          isPlayer: false,
+                                          url: state.feedList[index].url,
+                                          thumbnail:
+                                              GetVideoThumbnail.getThumbnail(
+                                                  videoId: state
+                                                      .feedList[index].videoId),
+                                          duration:
+                                              state.feedList[index].duration,
+                                        ));
+                                  } else {
+                                    return CustomThumbnail(
+                                      isPlayer: false,
+                                      url: state.feedList[index].url,
+                                      thumbnail: GetVideoThumbnail.getThumbnail(
+                                          videoId:
+                                              state.feedList[index].videoId),
+                                      duration: state.feedList[index].duration,
+                                    );
+                                  }
+                                },
+                                separatorBuilder: (context, val) {
+                                  return CustomDivider.divider();
+                                }),
+                          );
+                        } else if (state.status == Status.LOADING) {
+                          return const FeedLoadingEffect(isPlayer: false);
+                        } else {
+                          return const FeedLoadingEffect(isPlayer: false);
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
       },
     );
   }

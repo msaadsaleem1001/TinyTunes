@@ -14,6 +14,13 @@ class GetVideos extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class ShuffleList extends HomeEvent {
+  const ShuffleList();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class OnScreenChange extends HomeEvent {
   final bool isFirstScreen;
 
