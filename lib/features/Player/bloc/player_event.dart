@@ -10,14 +10,31 @@ abstract class AppPlayerEvent extends Equatable {
 
 }
 
+class OnVideoChange extends AppPlayerEvent{
+  final String currentUrl;
+
+  const OnVideoChange({required this.currentUrl});
+
+  @override
+  List<Object?> get props => [currentUrl];
+}
+
+class InitializePlayerScreen extends AppPlayerEvent{
+
+  final String url;
+
+  const InitializePlayerScreen({required this.url});
+
+  @override
+  List<Object?> get props => [url];
+
+}
 
 class OnFullScreenMode extends AppPlayerEvent{
 
-  final bool isFullScreen;
-
-  const OnFullScreenMode({required this.isFullScreen});
+  const OnFullScreenMode();
 
   @override
-  List<Object?> get props => [isFullScreen];
+  List<Object?> get props => [];
 
 }

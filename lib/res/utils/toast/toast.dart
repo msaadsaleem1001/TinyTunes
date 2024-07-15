@@ -17,4 +17,17 @@ class AppToast {
     }
   }
 
+  static void showToastForSelectCategory(
+      {required BuildContext context, required String message}) {
+    if (context.mounted) {
+      Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: AppColors.loadingColor1,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 14,
+      );
+    }
+  }
+
 }

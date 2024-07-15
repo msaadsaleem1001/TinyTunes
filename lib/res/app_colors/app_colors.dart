@@ -22,8 +22,8 @@ class AppColors {
 
   static const Color menuColor = Color(0xFF5E5E5E);
 
-  // Home icon color
-  static const Color unselectedIconColor = Color(0xFF707070);
+  // Settings first bloc color.
+  static const Color settingFirstBlock = Color(0xFF5E5E5E);
 
   static const Color loadingColor1 = Color(0xffadadad);
   static const Color loadingColor2 = Color(0xff424242);

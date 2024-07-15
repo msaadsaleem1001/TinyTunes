@@ -50,4 +50,24 @@ class FirebaseAnalyticsEvents {
     }
   }
 
+  static Future<void> selectedCategory(String category) async {
+    if (await CheckInternetConnection.checkInternetConnectionFunction()) {
+      try {
+        await FirebaseAnalytics.instance
+            .logEvent(
+          name: "categories_watched",
+          parameters: {
+            "category": category,
+          },
+        ).then((value) => debugPrint(
+            'Firebase Analytics Event Success full of selectedCategoryEvent'))
+            .onError((error, stackTrace) => debugPrint(
+            'Firebase Analytics Event Error of selectedCategoryEvent: ${error.toString()}'));
+      } catch (e) {
+        debugPrint(
+            'Firebase Analytics Event Error in selectedCategoryEvent: ${e.toString()}');
+      }
+    }
+  }
+
 }

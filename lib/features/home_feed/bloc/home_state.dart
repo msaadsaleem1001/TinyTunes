@@ -1,52 +1,43 @@
 import 'package:equatable/equatable.dart';
 import '../../../Data/Response/status.dart';
-import '../../../Models/videos_modal/video_modal.dart';
+import '../../../Models/videos_model/video_model.dart';
 
 class HomeState extends Equatable {
-  final List<VideoModal> feedList;
-  final List<String> urlList;
+  final List<VideoModel> feedList;
+  final List<VideoModel> recommendedList;
   final bool isFirstScreen;
   final Status status;
   final String errorMsg;
-  final int bottomBarIndex;
-  final String shortsSavedIndex;
 
   const HomeState({
     this.isFirstScreen = true,
     this.feedList = const [],
-    this.urlList = const [],
+    this.recommendedList = const [],
     this.status = Status.LOADING,
-    this.errorMsg = '',
-    this.bottomBarIndex = 0,
-    this.shortsSavedIndex = '',
+    this.errorMsg = ''
   });
 
   HomeState copyWith(
-      {List<VideoModal>? feedList,
-      List<String>? urlList,
+      {List<VideoModel>? feedList,
+      List<VideoModel>? recommendedList,
       bool? isFirstScreen,
       Status? status,
-      String? errorMsg,
-      int? bottomBarIndex,
-      String? shortsSavedIndex}) {
+      String? errorMsg}) {
     return HomeState(
         feedList: feedList ?? this.feedList,
-        urlList: urlList ?? this.urlList,
+        recommendedList: recommendedList ?? this.recommendedList,
         isFirstScreen: isFirstScreen ?? this.isFirstScreen,
         status: status ?? this.status,
         errorMsg: errorMsg ?? this.errorMsg,
-        bottomBarIndex: bottomBarIndex ?? this.bottomBarIndex,
-        shortsSavedIndex: shortsSavedIndex ?? this.shortsSavedIndex);
+    );
   }
 
   @override
   List<Object?> get props => [
         feedList,
-        urlList,
         isFirstScreen,
         status,
         errorMsg,
-        bottomBarIndex,
-        shortsSavedIndex
+        recommendedList
       ];
 }

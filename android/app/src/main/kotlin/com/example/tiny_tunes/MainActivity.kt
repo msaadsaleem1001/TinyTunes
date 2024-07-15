@@ -1,24 +1,31 @@
 package com.fullstacks.tinytunes
 
-import io.flutter.embedding.android.FlutterActivity
+import android.os.Bundle
+import android.view.KeyEvent
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
+import com.ryanheise.audioservice.AudioServiceActivity
 
-class MainActivity: FlutterActivity(){
+class MainActivity: AudioServiceActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        GeneratedPluginRegistrant.registerWith(flutterEngine);
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+    }
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "android_app_retain").apply {
-            setMethodCallHandler { method, result ->
-                if (method.method == "sendToBackground") {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
-                    moveTaskToBack(true)
-
-                }
-            }
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // Handle media buttons
+        if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+            // Handle play/pause button press
         }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }

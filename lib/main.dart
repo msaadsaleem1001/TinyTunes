@@ -1,3 +1,4 @@
+import 'package:TinyTunes/Repository/Settings%20Repo/settings_repo.dart';
 import 'package:TinyTunes/res/app_urls/app_urls.dart';
 import 'package:TinyTunes/tiny_tunes_app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,9 +20,10 @@ Future<void> main() async {
     url: AppUrls.supabaseUrl,
     anonKey: AppUrls.supabaseAnonKey,
   );
+  await CategoryDatabase.init();
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
       .then((_) {
-    runApp(const TinyTunes());
+    runApp(const TinyTunesApp());
   });
 }

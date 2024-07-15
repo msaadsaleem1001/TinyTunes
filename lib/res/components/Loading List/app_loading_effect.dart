@@ -19,7 +19,7 @@ class _FeedLoadingEffectState extends State<FeedLoadingEffect> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    timer = Timer.periodic(const Duration(milliseconds: 900), (time){
+    timer = Timer.periodic(const Duration(milliseconds: 900), (time) {
       setState(() {
         isDim = !isDim;
       });
@@ -35,30 +35,54 @@ class _FeedLoadingEffectState extends State<FeedLoadingEffect> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
-    final height = MediaQuery.sizeOf(context).height * 1;
-    return SizedBox(
-      width: width,
-      height: height * .45,
-      child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
+    // final height = MediaQuery.sizeOf(context).height * 1;
+    return ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Padding(
+                padding: const EdgeInsets.only(left: 30),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 900),
+                  padding: EdgeInsets.zero,
+                  margin: EdgeInsets.zero,
+                  width: widget.isPlayer ? width * .25 : width * .5,
+                  decoration: BoxDecoration(
+                      color: isDim
+                          ? AppColors.loadingColor2
+                          : AppColors.loadingColor1,
+                      borderRadius: BorderRadius.circular(15)),
+                ));
+          } else if (index == 9) {
+            return Padding(
+                padding: const EdgeInsets.only(right: 30),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 900),
+                  padding: EdgeInsets.zero,
+                  margin: EdgeInsets.zero,
+                  width: widget.isPlayer ? width * .25 : width * .5,
+                  decoration: BoxDecoration(
+                      color: isDim
+                          ? AppColors.loadingColor2
+                          : AppColors.loadingColor1,
+                      borderRadius: BorderRadius.circular(15)),
+                ));
+          } else {
             return AnimatedContainer(
               duration: const Duration(milliseconds: 900),
               padding: EdgeInsets.zero,
               margin: EdgeInsets.zero,
-              width: widget.isPlayer? 200 : 300,
+              width: widget.isPlayer ? width * .25 : width * .5,
               decoration: BoxDecoration(
-                color: isDim? AppColors.loadingColor2 : AppColors.loadingColor1,
-                borderRadius: BorderRadius.circular(15)
-              ),
+                  color:
+                      isDim ? AppColors.loadingColor2 : AppColors.loadingColor1,
+                  borderRadius: BorderRadius.circular(15)),
             );
-          },
-          separatorBuilder: (context, val) {
-            return CustomDivider.divider();
-          },
-          itemCount: 10
-      ),
-    );
+          }
+        },
+        separatorBuilder: (context, val) {
+          return CustomDivider.divider();
+        },
+        itemCount: 10);
   }
 }
-

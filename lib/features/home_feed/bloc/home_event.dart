@@ -1,3 +1,4 @@
+import 'package:TinyTunes/Models/videos_model/video_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class HomeEvent extends Equatable {
@@ -5,6 +6,16 @@ abstract class HomeEvent extends Equatable {
 
   @override
   List<Object?> get props => [];
+}
+
+class CreateRecommendedList extends HomeEvent{
+
+  final VideoModel video;
+
+  const CreateRecommendedList({required this.video});
+
+  @override
+  List<Object?> get props => [video];
 }
 
 class GetVideos extends HomeEvent {
@@ -28,24 +39,4 @@ class OnScreenChange extends HomeEvent {
 
   @override
   List<Object?> get props => [isFirstScreen];
-}
-
-class OnChangeBarView extends HomeEvent {
-  final int bottomBarIndex;
-
-  const OnChangeBarView(
-      {required this.bottomBarIndex});
-
-  @override
-  List<Object?> get props => [bottomBarIndex];
-}
-
-class SaveShortsIndex extends HomeEvent {
-  final int shortsIndex;
-
-  const SaveShortsIndex(
-      {required this.shortsIndex});
-
-  @override
-  List<Object?> get props => [shortsIndex];
 }

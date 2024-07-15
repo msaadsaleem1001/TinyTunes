@@ -2,9 +2,9 @@
 // App Constants that are Expense table name and its column names.
 class AppConstants {
 
-  static const String confirmationFullScreen = 'Are you sure you want to exit from full screen mode?';
+  static const String confirmationSave = 'Are you sure to save these categories?';
 
-  static const String confirmationMinimizeApp = 'Are you sure you want to leave the App';
+  static const String confirmationSaveDefault = 'Are you sure to save default settings?';
 
   static const String tableName = 'tiny_tunes';
 
@@ -23,7 +23,5 @@ class AppConstants {
   static const Map<String, String> langListValue = {'ENGLISH': 'ENG', 'HINDI': 'HI'};
 
   static const List<String> categoryList = ['ISLAMIC', 'FUN LEARNING', 'CRAFTS', 'POEMS', 'TOYS', 'ANIMALS', 'OTHERS'];
-  static const List<String> categoryListS = ['', 'All', 'Islamic', 'Fun Learning', 'Crafts', 'Poems', 'Toys', 'Animals', 'Others'];
-
 
 }

@@ -1,103 +1,98 @@
+import 'package:TinyTunes/features/home_feed/bloc/home_bloc.dart';
+import 'package:TinyTunes/features/home_feed/bloc/home_event.dart';
 import 'package:TinyTunes/res/app_assets/app_assets.dart';
+import 'package:TinyTunes/res/routes/app_route_constants.dart';
+import 'package:TinyTunes/res/utils/Dialog/confirmation_dialogbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../features/home_feed/bloc/home_bloc.dart';
-import '../../../features/home_feed/bloc/home_event.dart';
+import '../../../features/setting/bloc/setting_bloc.dart';
+import '../../../features/setting/bloc/setting_event.dart';
 import '../../app_colors/app_colors.dart';
-
-class SliverBrukulAppBar extends StatelessWidget {
-  final bool innerBoxIsScrolled;
-  const SliverBrukulAppBar({
-    super.key,
-    required this.innerBoxIsScrolled,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // final width = MediaQuery.sizeOf(context).width * 1;
-    return SliverAppBar(
-      title: SizedBox(height: 150, child: Image.asset(AppAssets.textLogo)),
-      pinned: false,
-      floating: false,
-      forceElevated: innerBoxIsScrolled,
-    );
-  }
-}
+import '../../app_text_styles/text_styles.dart';
 
 class TinyTunesAppBars {
-  static Widget homeAppBar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Image.asset(AppAssets.textLogo,
-              height: 100, width: 200, fit: BoxFit.cover),
-          GestureDetector(
-              onTap: () {},
-              child: const Icon(Icons.settings,
-                  size: 25, color: AppColors.appWhite))
-        ],
-      ),
-    );
-  }
 
-  static AppBar tinyTunesAppBar(BuildContext context) {
+  static AppBar homeAppBar(BuildContext context, HomeBloc homeBloc) {
     return AppBar(
-      automaticallyImplyLeading: false,
-      leading: IconButton(
-        onPressed: () {
-          GoRouter.of(context).pop();
-          context
-              .read<HomeBloc>()
-              .add(const OnScreenChange(isFirstScreen: true));
-        },
-        color: AppColors.appWhite,
-        icon: const Icon(Icons.arrow_back_rounded, size: 30),
-      ),
-      title: SizedBox(height: 150, child: Image.asset(AppAssets.textLogo)),
-      // actions: const [CustomPopupMenu()]
+      titleSpacing: 5,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Image.asset(AppAssets.textLogo,
+          height: 100, width: 200, fit: BoxFit.cover),
+      actions: [
+        GestureDetector(
+            onTap: () {
+              homeBloc.add(const GetVideos());
+            },
+            child: const Icon(Icons.refresh_rounded,
+                size: 30, color: AppColors.appWhite)),
+        const SizedBox(width: 30),
+        GestureDetector(
+            onTap: () {
+              homeBloc.add(const OnScreenChange(isFirstScreen: false));
+              GoRouter.of(context).pushNamed(AppRouteConstants.confirm);
+            },
+            child: const Icon(Icons.lock_rounded,
+                size: 30, color: AppColors.appWhite)),
+        const SizedBox(width: 20),
+      ],
     );
   }
 
-  // static SliverAppBar categoriesAppBar() {
-  //   return SliverAppBar(
-  //       pinned: true,
-  //       floating: false,
-  //       flexibleSpace: ListView.separated(
-  //           scrollDirection: Axis.horizontal,
-  //           itemCount: AppConstants.categoryListS.length,
-  //           itemBuilder: (context, index) {
-  //             if (index == 0) {
-  //               return const SizedBox(width: 15);
-  //             } else if (index == 8) {
-  //               return const SizedBox();
-  //             } else {
-  //               return Container(
-  //                 margin: const EdgeInsets.symmetric(vertical: 15),
-  //                 padding: const EdgeInsets.symmetric(horizontal: 10),
-  //                 decoration: BoxDecoration(
-  //                   color: index == 1? AppColors.appWhite : AppColors.unselectedIconColor,
-  //                   borderRadius: BorderRadius.circular(5),
-  //                 ),
-  //                 child: InkWell(
-  //                   child: Center(
-  //                     child: Text(AppConstants.categoryListS[index],
-  //                         style: AppTextStyles.categoryStyle(
-  //                           color: index == 1? AppColors.darkModeAppBarColor : AppColors.normalTextColorDark
-  //                         )),
-  //                   ),
-  //                 ),
-  //               );
-  //             }
-  //           },
-  //           separatorBuilder: (context, indexS) {
-  //             if (indexS == 0) {
-  //               return const SizedBox();
-  //             } else {
-  //               return const SizedBox(width: 10);
-  //             }
-  //           }));
-  // }
+  static AppBar confirmAppBar(BuildContext context) {
+    return AppBar(
+      leading: GestureDetector(
+        onTap: (){
+          if(context.canPop()){
+            context.pop();
+          }else{
+            AppDialogs.showConfirmationDialogToSaveDefaultSettings(context);
+          }
+        },
+        child: const Icon(Icons.arrow_back_ios_rounded, size: 30, color: AppColors.appWhite),
+      ),
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      title: Text(
+        'Parents Only',
+        style: AppTextStyles.titleStyle(fontSize: 22),
+      ),
+    );
+  }
+
+  static AppBar settingsAppBar(BuildContext context, SettingBloc setting){
+    return AppBar(
+      centerTitle: false,
+      automaticallyImplyLeading: false,
+      title: Text('Setting', style: AppTextStyles.titleStyle()),
+      actions: [
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: GestureDetector(
+                onTap: (){
+                  setting.add(OnSaveEvent(context: context));
+                },
+                child: const Icon(Icons.arrow_forward_ios_rounded, size: 30, color: AppColors.appWhite)
+            )),
+      ],
+    );
+  }
+
+  static AppBar playerAppBar(BuildContext context){
+    return AppBar(
+      leading: InkWell(
+        enableFeedback: false,
+        onTap: (){
+          if(GoRouter.of(context).canPop()){
+            context.pop();
+            context.read<HomeBloc>().add(const OnScreenChange(isFirstScreen: true));
+          }
+        },
+        child: const Icon(Icons.arrow_back_ios_rounded, size: 30, color: AppColors.appWhite),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    );
+  }
+
 }

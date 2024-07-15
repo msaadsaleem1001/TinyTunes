@@ -1,25 +1,28 @@
 
+import 'package:TinyTunes/Data/Response/status.dart';
 import 'package:equatable/equatable.dart';
 
 class AppPlayerState extends Equatable {
 
   final bool isFullScreen;
-  final bool isFirstScreen;
+  final String currentUrl;
+  final Status status;
 
   const AppPlayerState({
     this.isFullScreen = false,
-    this.isFirstScreen = false,
+    this.currentUrl = '',
+    this.status = Status.LOADING
   });
 
-  AppPlayerState copyWith({bool? isFullScreen, bool? isFirstScreen}){
+  AppPlayerState copyWith({bool? isFullScreen, String? currentUrl, Status? status}){
     return AppPlayerState(
       isFullScreen: isFullScreen ?? this.isFullScreen,
-      isFirstScreen: isFirstScreen ?? this.isFirstScreen
+      currentUrl: currentUrl ?? this.currentUrl,
+      status: status ?? this.status
     );
   }
 
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [isFullScreen, isFirstScreen];
+  List<Object?> get props => [isFullScreen, currentUrl, status];
 }
