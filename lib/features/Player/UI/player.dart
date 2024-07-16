@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class AppVideoPlayer extends StatefulWidget {
-  final String currentUrl;
-  const AppVideoPlayer({super.key, required this.currentUrl});
+  final String currentVideoId;
+  const AppVideoPlayer({super.key, required this.currentVideoId});
 
   @override
   State<AppVideoPlayer> createState() => _AppVideoPlayerState();
@@ -25,7 +25,8 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
         showFullscreenButton: false,
         loop: true,
       ),
-      videoId: YoutubePlayerController.convertUrlToId(widget.currentUrl, trimWhitespaces: true)!,
+      // videoId: YoutubePlayerController.convertUrlToId(widget.currentUrl, trimWhitespaces: true),
+      videoId: widget.currentVideoId
     );
   }
 

@@ -32,30 +32,3 @@ class SplashView extends StatelessWidget {
     );
   }
 }
-
-class TempSplashView extends StatelessWidget {
-  const TempSplashView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width * 1;
-    final height = MediaQuery.sizeOf(context).height * 1;
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-          body: Container(
-            width: width,
-            height: height,
-            decoration: const BoxDecoration(
-                image: DecorationImage(image: AssetImage(AppAssets.splashImage), fit: BoxFit.cover)
-            ),
-          )
-      )
-    );
-  }
-}

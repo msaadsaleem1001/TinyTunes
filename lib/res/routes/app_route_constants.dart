@@ -11,4 +11,6 @@ class AppRouteConstants{
 
   static const String setting = 'setting';
 
+  static const String privacy = 'privacy';
+
 }

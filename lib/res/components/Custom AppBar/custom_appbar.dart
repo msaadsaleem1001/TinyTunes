@@ -1,5 +1,6 @@
 import 'package:TinyTunes/features/home_feed/bloc/home_bloc.dart';
 import 'package:TinyTunes/features/home_feed/bloc/home_event.dart';
+import 'package:TinyTunes/res/Privacy%20Policy/privacy_policy_view.dart';
 import 'package:TinyTunes/res/app_assets/app_assets.dart';
 import 'package:TinyTunes/res/routes/app_route_constants.dart';
 import 'package:TinyTunes/res/utils/Dialog/confirmation_dialogbox.dart';
@@ -67,6 +68,13 @@ class TinyTunesAppBars {
       automaticallyImplyLeading: false,
       title: Text('Setting', style: AppTextStyles.titleStyle()),
       actions: [
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: GestureDetector(
+                onTap: (){
+                  PrivacyPolicy.launchInBrowserView(context);
+                },
+                child: const Image(image: AssetImage(AppAssets.privacyImage), width: 25, height: 25, fit: BoxFit.cover),
+            )),
         Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
                 onTap: (){

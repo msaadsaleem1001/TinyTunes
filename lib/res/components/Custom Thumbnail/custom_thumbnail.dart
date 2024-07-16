@@ -52,7 +52,7 @@ class _CustomThumbnailState extends State<CustomThumbnail> {
               FirebaseAnalyticsEvents.selectedCategory(widget.video.category);
               FirebaseAnalyticsEvents.onTapOnVideoEvent();
               widget.homeBloc.add(CreateRecommendedList(video: widget.video));
-              widget.appPlayerBloc.add(OnVideoChange(currentUrl: widget.url));
+              widget.appPlayerBloc.add(OnVideoChange(currentVideoId: widget.video.videoId));
             }else{
               // debugPrint('Current url: ${widget.url}');
               FirebaseAnalyticsEvents.selectedCategory(widget.video.category);
@@ -61,18 +61,18 @@ class _CustomThumbnailState extends State<CustomThumbnail> {
               widget.homeBloc.add(const OnScreenChange(isFirstScreen: false));
               PlayerArgs playerArgs = PlayerArgs(
                 homeBloc: widget.homeBloc,
-                currentUrl: widget.url,
+                videoId: widget.video.videoId,
               );
               GoRouter.of(context).pushNamed(
-                  AppRouteConstants.playerRoute,
-                  extra: playerArgs
+                AppRouteConstants.playerRoute,
+                extra: playerArgs
               );
             }
           },
           child: Container(
             margin: EdgeInsets.zero,
             padding: EdgeInsets.zero,
-            width: widget.isPlayer? width * .25 : width * .5,
+            width: widget.isPlayer? width * .27 : width * .5,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
             ),
@@ -82,7 +82,7 @@ class _CustomThumbnailState extends State<CustomThumbnail> {
                   borderRadius: BorderRadius.circular(15),
                   child: Image.network(
                     widget.thumbnail,
-                    width: widget.isPlayer? width * .25 : width * .5,
+                    width: widget.isPlayer? width * .27 : width * .5,
                     fit: BoxFit.cover
                   ),
                 )),

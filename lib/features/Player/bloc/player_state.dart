@@ -5,24 +5,24 @@ import 'package:equatable/equatable.dart';
 class AppPlayerState extends Equatable {
 
   final bool isFullScreen;
-  final String currentUrl;
+  final String currentVideoId;
   final Status status;
 
   const AppPlayerState({
     this.isFullScreen = false,
-    this.currentUrl = '',
+    this.currentVideoId = '',
     this.status = Status.LOADING
   });
 
-  AppPlayerState copyWith({bool? isFullScreen, String? currentUrl, Status? status}){
+  AppPlayerState copyWith({bool? isFullScreen, String? currentVideoId, Status? status}){
     return AppPlayerState(
       isFullScreen: isFullScreen ?? this.isFullScreen,
-      currentUrl: currentUrl ?? this.currentUrl,
+       currentVideoId: currentVideoId ?? this.currentVideoId,
       status: status ?? this.status
     );
   }
 
 
   @override
-  List<Object?> get props => [isFullScreen, currentUrl, status];
+  List<Object?> get props => [isFullScreen, currentVideoId, status];
 }

@@ -11,22 +11,22 @@ abstract class AppPlayerEvent extends Equatable {
 }
 
 class OnVideoChange extends AppPlayerEvent{
-  final String currentUrl;
+  final String currentVideoId;
 
-  const OnVideoChange({required this.currentUrl});
+  const OnVideoChange({required this.currentVideoId});
 
   @override
-  List<Object?> get props => [currentUrl];
+  List<Object?> get props => [currentVideoId];
 }
 
 class InitializePlayerScreen extends AppPlayerEvent{
 
-  final String url;
+  final String currentVideoId;
 
-  const InitializePlayerScreen({required this.url});
+  const InitializePlayerScreen({required this.currentVideoId});
 
   @override
-  List<Object?> get props => [url];
+  List<Object?> get props => [currentVideoId];
 
 }
 

@@ -27,6 +27,7 @@ dependencies:
   hive_flutter: ^1.1.0
   audio_service: ^0.18.14
   just_audio: ^0.9.39
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

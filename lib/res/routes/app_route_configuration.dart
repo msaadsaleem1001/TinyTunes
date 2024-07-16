@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import '../../features/Error/error page route screen/error_screen.dart';
 import '../../features/home_feed/ui/home_view.dart';
 import '../../features/setting/ui/setting_view.dart';
-import '../../main.dart';
 import 'app_route_constants.dart';
 
 class AppRoutes {

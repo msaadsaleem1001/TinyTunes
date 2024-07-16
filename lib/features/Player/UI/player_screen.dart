@@ -19,7 +19,7 @@ import '../../../res/utils/get video thumbnail/get_video_thumbnail.dart';
 import '../../home_feed/bloc/home_event.dart';
 
 class AppPlayerScreen extends StatefulWidget {
-  final PlayerArgs? playerArgs;
+  final PlayerArgs playerArgs;
   final AudioHandler audioHandler;
   const AppPlayerScreen(
       {super.key, required this.playerArgs, required this.audioHandler});
@@ -36,15 +36,15 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
     super.initState();
     appPlayerBloc = AppPlayerBloc();
     appPlayerBloc
-        .add(InitializePlayerScreen(url: widget.playerArgs!.currentUrl));
+        .add(InitializePlayerScreen(currentVideoId: widget.playerArgs.videoId));
     widget.audioHandler.pause();
   }
 
   @override
   void dispose() {
     widget.audioHandler.play();
-    super.dispose();
     appPlayerBloc.close();
+    super.dispose();
   }
 
   @override
@@ -87,18 +87,22 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                               child: Container(
                                 margin: EdgeInsets.only(
                                     top: state.isFullScreen ? 0 : 20,
-                                    bottom: state.isFullScreen ? 0 : 10),
+                                    bottom: state.isFullScreen ? 0 : 3),
                                 height:
                                     state.isFullScreen ? height : height * .63,
                                 width: state.isFullScreen ? width : width * .7,
                                 child: AppVideoPlayer(
-                                    currentUrl: state.currentUrl),
+                                    currentVideoId: state.currentVideoId,
+                                    // currentUrl: state.currentUrl
+                                ),
                               ),
                             );
                           } else {
                             return Container(
-                              height:
-                                  state.isFullScreen ? height : height * .63,
+                              margin: EdgeInsets.only(
+                                  top: state.isFullScreen ? 0 : 20,
+                                  bottom: state.isFullScreen ? 0 : 3),
+                              height: state.isFullScreen ? height : height * .63,
                               width: state.isFullScreen ? width : width * .7,
                               decoration: const BoxDecoration(
                                 color: AppColors.darkModeScaffoldColor,
@@ -114,11 +118,11 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                         }),
                       ),
                       BlocProvider.value(
-                        value: widget.playerArgs!.homeBloc,
+                        value: widget.playerArgs.homeBloc,
                         child: Container(
                           margin: EdgeInsets.zero,
                           width: width,
-                          height: (width * .25) * 9 / 16,
+                          height: (width * .27) * 9 / 16,
                           child: BlocBuilder<HomeBloc, HomeState>(
                               builder: (context, state) {
                             if (state.status == Status.COMPLETED) {
@@ -132,7 +136,7 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                                             const EdgeInsets.only(left: 30),
                                         child: CustomThumbnail(
                                           video: state.recommendedList[index],
-                                          homeBloc: widget.playerArgs!.homeBloc,
+                                          homeBloc: widget.playerArgs.homeBloc,
                                           appPlayerBloc: appPlayerBloc,
                                           isPlayer: true,
                                           url: state.recommendedList[index].url,
@@ -152,7 +156,7 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                                             const EdgeInsets.only(right: 30),
                                         child: CustomThumbnail(
                                           video: state.recommendedList[index],
-                                          homeBloc: widget.playerArgs!.homeBloc,
+                                          homeBloc: widget.playerArgs.homeBloc,
                                           appPlayerBloc: appPlayerBloc,
                                           isPlayer: true,
                                           url: state.recommendedList[index].url,
@@ -168,7 +172,7 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                                   } else {
                                     return CustomThumbnail(
                                       video: state.recommendedList[index],
-                                      homeBloc: widget.playerArgs!.homeBloc,
+                                      homeBloc: widget.playerArgs.homeBloc,
                                       appPlayerBloc: appPlayerBloc,
                                       isPlayer: true,
                                       url: state.recommendedList[index].url,
@@ -208,7 +212,7 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                           child: IconButton(
                             onPressed: () {
                               GoRouter.of(context).pop();
-                              widget.playerArgs!.homeBloc.add(const OnScreenChange(isFirstScreen: true));
+                              widget.playerArgs.homeBloc.add(const OnScreenChange(isFirstScreen: true));
                             },
                             icon: const Icon(Icons.arrow_back_ios_rounded,
                             size: 30, color: AppColors.appWhite)));

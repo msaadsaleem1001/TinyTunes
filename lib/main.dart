@@ -1,6 +1,8 @@
 import 'package:TinyTunes/Repository/Settings%20Repo/settings_repo.dart';
+import 'package:TinyTunes/res/Audio%20Background%20Services/audio_background_services.dart';
 import 'package:TinyTunes/res/app_urls/app_urls.dart';
 import 'package:TinyTunes/tiny_tunes_app.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,9 +23,10 @@ Future<void> main() async {
     anonKey: AppUrls.supabaseAnonKey,
   );
   await CategoryDatabase.init();
+  final AudioHandler audioHandler = await InitializeAudioHandler.init();
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
       .then((_) {
-    runApp(const TinyTunesApp());
+    runApp(TinyTunesApp(audioHandler: audioHandler));
   });
 }

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:TinyTunes/res/app_assets/app_assets.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
@@ -53,5 +52,20 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
       speed: _player.speed,
       queueIndex: _player.currentIndex,
     );
+  }
+}
+
+class InitializeAudioHandler {
+
+  static Future<AudioHandler> init() async {
+    final AudioHandler audioHandler = await AudioService.init(
+      builder: () => MyAudioHandler(),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'com.fullstacks.tinytunes.channel.audio',
+        androidNotificationChannelName: 'Audio playback',
+        androidNotificationOngoing: true,
+      ),
+    );
+    return audioHandler;
   }
 }

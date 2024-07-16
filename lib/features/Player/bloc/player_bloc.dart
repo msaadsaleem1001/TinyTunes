@@ -7,7 +7,7 @@ class AppPlayerBloc extends Bloc<AppPlayerEvent, AppPlayerState> {
 
   bool isFullScreen = false;
   Status status = Status.LOADING;
-  String currentUrl = '';
+  String currentVideoId = '';
 
   AppPlayerBloc() : super(const AppPlayerState()) {
     on<OnFullScreenMode>(_onFullScreenMode);
@@ -19,17 +19,19 @@ class AppPlayerBloc extends Bloc<AppPlayerEvent, AppPlayerState> {
     status = Status.LOADING;
     await Future.delayed(Duration.zero, () => emit(state.copyWith(status: status)));
     status = Status.COMPLETED;
-    currentUrl = event.currentUrl;
+    currentVideoId = event.currentVideoId;
     await Future.delayed(const Duration(milliseconds: 600), () => emit(state.copyWith(
       status: status,
-      currentUrl: currentUrl
+        currentVideoId: currentVideoId
     )));
   }
 
-  void _initializePlayerScreen(InitializePlayerScreen event, Emitter<AppPlayerState> emit) {
-    currentUrl = event.url;
+  void _initializePlayerScreen(InitializePlayerScreen event, Emitter<AppPlayerState> emit) async{
+    currentVideoId = event.currentVideoId;
     status = Status.COMPLETED;
-    emit(state.copyWith(currentUrl: currentUrl, status: status));
+    await Future.delayed(const Duration(milliseconds: 600), () =>
+        emit(state.copyWith(currentVideoId: currentVideoId, status: status))
+    );
   }
 
   void _onFullScreenMode(OnFullScreenMode event, Emitter<AppPlayerState> emit) {
