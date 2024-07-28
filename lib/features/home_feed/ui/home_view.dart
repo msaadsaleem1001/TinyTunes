@@ -2,6 +2,7 @@ import 'package:TinyTunes/features/Player/bloc/player_bloc.dart';
 import 'package:TinyTunes/res/app_assets/app_assets.dart';
 import 'package:TinyTunes/res/components/Custom%20AppBar/custom_appbar.dart';
 import 'package:TinyTunes/res/components/Custom%20Divider/custom_divider.dart';
+import 'package:TinyTunes/res/utils/Periodic%20Ads/perodic_ads.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,21 +23,47 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
   late HomeBloc homeBloc;
+  late PeriodicAds periodicAds;
 
   @override
   void initState() {
-    super.initState();
+    WidgetsBinding.instance.addObserver(this);
     homeBloc = HomeBloc();
     homeBloc.add(const GetVideos());
     widget.audioHandler.play();
+    periodicAds = PeriodicAds(context);
+    periodicAds.showFirstAd(context, 30);
+    super.initState();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     homeBloc.close();
+    periodicAds.stopTimer();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async{
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
+      // debugPrint('Home App Exited');
+      periodicAds.stopTimer();
+    } else if (state == AppLifecycleState.paused) {
+      // debugPrint('Home App In Background');
+      periodicAds.stopTimer();
+    } else if (state == AppLifecycleState.resumed) {
+      // debugPrint('Home App Resumed');
+      periodicAds = PeriodicAds(context);
+      periodicAds.showFirstAd(context, 30);
+    } else {
+      // debugPrint('State: ${state.name}');
+    }
   }
 
   @override
@@ -160,7 +187,7 @@ class _HomeViewState extends State<HomeView> {
                       )
                     ],
                   ),
-                ),
+                )
               )
           );
         },

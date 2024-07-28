@@ -70,4 +70,38 @@ class FirebaseAnalyticsEvents {
     }
   }
 
+  static Future<void> adSkipped() async {
+    if (await CheckInternetConnection.checkInternetConnectionFunction()) {
+      try {
+        await FirebaseAnalytics.instance
+            .logEvent(
+          name: "ad_skipped",
+        ).then((value) => debugPrint(
+            'Firebase Analytics Event Success full of Ad Skipped'))
+            .onError((error, stackTrace) => debugPrint(
+            'Firebase Analytics Event Error of Ad Skipped: ${error.toString()}'));
+      } catch (e) {
+        debugPrint(
+            'Firebase Analytics Event Error in Ad Skipped: ${e.toString()}');
+      }
+    }
+  }
+
+  static Future<void> adClicked() async {
+    if (await CheckInternetConnection.checkInternetConnectionFunction()) {
+      try {
+        await FirebaseAnalytics.instance
+            .logEvent(
+          name: "ad_click",
+        ).then((value) => debugPrint(
+            'Firebase Analytics Event Success full of Ad Clicked'))
+            .onError((error, stackTrace) => debugPrint(
+            'Firebase Analytics Event Error of Ad Clicked: ${error.toString()}'));
+      } catch (e) {
+        debugPrint(
+            'Firebase Analytics Event Error in Ad Clicked: ${e.toString()}');
+      }
+    }
+  }
+
 }

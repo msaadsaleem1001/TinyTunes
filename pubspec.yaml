@@ -28,6 +28,7 @@ dependencies:
   audio_service: ^0.18.14
   just_audio: ^0.9.39
   url_launcher: ^6.3.0
+  unity_ads_plugin: ^0.3.18
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:TinyTunes/res/app_assets/app_assets.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:just_audio/just_audio.dart';
 
 class MyAudioHandler extends BaseAudioHandler with SeekHandler {
@@ -58,14 +59,20 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
 class InitializeAudioHandler {
 
   static Future<AudioHandler> init() async {
-    final AudioHandler audioHandler = await AudioService.init(
-      builder: () => MyAudioHandler(),
-      config: const AudioServiceConfig(
-        androidNotificationChannelId: 'com.fullstacks.tinytunes.channel.audio',
-        androidNotificationChannelName: 'Audio playback',
-        androidNotificationOngoing: true,
-      ),
-    );
-    return audioHandler;
+    try{
+      final AudioHandler audioHandler = await AudioService.init(
+        builder: () => MyAudioHandler(),
+        config: const AudioServiceConfig(
+          androidNotificationChannelId: 'com.fullstacks.tinytunes.channel.audio',
+          androidNotificationChannelName: 'Audio playback',
+          androidNotificationOngoing: true,
+        ),
+      );
+      debugPrint('Successfully initialize Audio HAndler');
+      return audioHandler;
+    }catch(e){
+      debugPrint('Error in catch while initializing audio: $e');
+      throw Exception();
+    }
   }
 }

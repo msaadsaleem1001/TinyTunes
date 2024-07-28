@@ -73,49 +73,37 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      BlocProvider(
-                        create: (context) => appPlayerBloc,
-                        child: BlocBuilder<AppPlayerBloc, AppPlayerState>(
-                            builder: (context, state) {
-                          if (state.status == Status.COMPLETED) {
-                            return InkWell(
-                              enableFeedback: false,
-                              onDoubleTap: () {
-                                // debugPrint('Double Tap!');
-                                appPlayerBloc.add(const OnFullScreenMode());
-                              },
-                              child: Container(
+                      InkWell(
+                        enableFeedback: false,
+                        onDoubleTap: () {
+                          // debugPrint('Double Tap!');
+                          appPlayerBloc.add(const OnFullScreenMode());
+                        },
+                        child: BlocProvider(
+                            create: (context) => appPlayerBloc,
+                            child: BlocBuilder<AppPlayerBloc, AppPlayerState>(
+                                builder: (context, state) {
+                              return Container(
                                 margin: EdgeInsets.only(
                                     top: state.isFullScreen ? 0 : 20,
                                     bottom: state.isFullScreen ? 0 : 3),
                                 height:
                                     state.isFullScreen ? height : height * .63,
                                 width: state.isFullScreen ? width : width * .7,
-                                child: AppVideoPlayer(
-                                    currentVideoId: state.currentVideoId,
-                                    // currentUrl: state.currentUrl
+                                decoration: const BoxDecoration(
+                                  color: AppColors.darkModeScaffoldColor,
                                 ),
-                              ),
-                            );
-                          } else {
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  top: state.isFullScreen ? 0 : 20,
-                                  bottom: state.isFullScreen ? 0 : 3),
-                              height: state.isFullScreen ? height : height * .63,
-                              width: state.isFullScreen ? width : width * .7,
-                              decoration: const BoxDecoration(
-                                color: AppColors.darkModeScaffoldColor,
-                              ),
-                              child: const Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColors.appWhite,
-                                  strokeWidth: 3,
-                                ),
-                              ),
-                            );
-                          }
-                        }),
+                                child: state.status == Status.COMPLETED
+                                    ? AppVideoPlayer(
+                                        currentVideoId: state.currentVideoId)
+                                    : const Center(
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.appWhite,
+                                          strokeWidth: 3,
+                                        ),
+                                      ),
+                              );
+                            })),
                       ),
                       BlocProvider.value(
                         value: widget.playerArgs.homeBloc,
@@ -202,20 +190,21 @@ class _AppPlayerScreenState extends State<AppPlayerScreen> {
                   create: (context) => appPlayerBloc,
                   child: BlocBuilder<AppPlayerBloc, AppPlayerState>(
                     builder: (context, state) {
-                      if(state.isFullScreen){
+                      if (state.isFullScreen) {
                         return const SizedBox();
-                      }
-                      else{
+                      } else {
                         return Positioned(
-                          top: 25,
-                          left: 10,
-                          child: IconButton(
-                            onPressed: () {
-                              GoRouter.of(context).pop();
-                              widget.playerArgs.homeBloc.add(const OnScreenChange(isFirstScreen: true));
-                            },
-                            icon: const Icon(Icons.arrow_back_ios_rounded,
-                            size: 30, color: AppColors.appWhite)));
+                            top: 25,
+                            left: 10,
+                            child: IconButton(
+                                onPressed: () {
+                                  GoRouter.of(context).pop();
+                                  widget.playerArgs.homeBloc.add(
+                                      const OnScreenChange(
+                                          isFirstScreen: true));
+                                },
+                                icon: const Icon(Icons.arrow_back_ios_rounded,
+                                    size: 30, color: AppColors.appWhite)));
                       }
                     },
                   ),

@@ -1,5 +1,6 @@
 import 'package:TinyTunes/features/Player/Player%20Args/player_args.dart';
 import 'package:TinyTunes/features/Player/UI/player_screen.dart';
+import 'package:TinyTunes/features/Unity%20Ad/UI/video_ad_screen.dart';
 import 'package:TinyTunes/features/confirm/ui/confirm_view.dart';
 import 'package:TinyTunes/features/splash/ui/splash_view.dart';
 import 'package:audio_service/audio_service.dart';
@@ -48,6 +49,12 @@ class AppRoutes {
               path: '/setting',
               pageBuilder: (context, state) {
                 return MaterialPage(child: SettingView(audioHandler: audioHandler));
+              }),
+          GoRoute(
+              name: AppRouteConstants.videoAdScreen,
+              path: '/videoAdScreen',
+              pageBuilder: (context, state) {
+                return const MaterialPage(child: VideoAdScreen());
               }),
         ],
         errorPageBuilder: (context, state) {

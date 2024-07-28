@@ -47,13 +47,14 @@ class _CustomThumbnailState extends State<CustomThumbnail> {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return GestureDetector(
-          onTap: (){
-            if(widget.isPlayer){
+          onTap: () {
+            if (widget.isPlayer) {
               FirebaseAnalyticsEvents.selectedCategory(widget.video.category);
               FirebaseAnalyticsEvents.onTapOnVideoEvent();
               widget.homeBloc.add(CreateRecommendedList(video: widget.video));
-              widget.appPlayerBloc.add(OnVideoChange(currentVideoId: widget.video.videoId));
-            }else{
+              widget.appPlayerBloc
+                  .add(OnVideoChange(currentVideoId: widget.video.videoId));
+            } else {
               // debugPrint('Current url: ${widget.url}');
               FirebaseAnalyticsEvents.selectedCategory(widget.video.category);
               FirebaseAnalyticsEvents.onTapOnVideoEvent();
@@ -63,46 +64,59 @@ class _CustomThumbnailState extends State<CustomThumbnail> {
                 homeBloc: widget.homeBloc,
                 videoId: widget.video.videoId,
               );
-              GoRouter.of(context).pushNamed(
-                AppRouteConstants.playerRoute,
-                extra: playerArgs
-              );
+              GoRouter.of(context)
+                  .pushNamed(AppRouteConstants.playerRoute, extra: playerArgs);
             }
           },
           child: Container(
-            margin: EdgeInsets.zero,
-            padding: EdgeInsets.zero,
-            width: widget.isPlayer? width * .27 : width * .5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Stack(
-              children: [
-                Positioned.fill(child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    widget.thumbnail,
-                    width: widget.isPlayer? width * .27 : width * .5,
-                    fit: BoxFit.cover
-                  ),
-                )),
-                Positioned(
-                    bottom: 10,
-                    right: 10,
-                    child: isVideoFound
-                        ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      height: 20,
-                      decoration:
-                      const BoxDecoration(color: AppColors.appBlack),
-                      child: Center(
-                        child: Text(widget.duration),
-                      ),
-                    )
-                        : const SizedBox()),
-              ],
-            )
-          ),
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
+              width: widget.isPlayer ? width * .27 : width * .5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                      child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Image.network(
+                      widget.thumbnail,
+                      width: widget.isPlayer ? width * .27 : width * .5,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, obj, error) {
+                        debugPrint('Thumbnail Error');
+                        return Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          decoration: const BoxDecoration(
+                              color: AppColors.loadingColor1),
+                          child: Center(
+                            child: Icon(Icons.error_outline_rounded,
+                                size: widget.isPlayer ? 15 : 30,
+                                color: AppColors.appWhite),
+                          ),
+                        );
+                      },
+                    ),
+                  )),
+                  Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: isVideoFound
+                          ? Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              height: 20,
+                              decoration: const BoxDecoration(
+                                  color: AppColors.appBlack),
+                              child: Center(
+                                child: Text(widget.duration),
+                              ),
+                            )
+                          : const SizedBox()),
+                ],
+              )),
         );
       },
     );

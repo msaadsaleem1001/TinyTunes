@@ -1,4 +1,5 @@
 import 'package:TinyTunes/Repository/Settings%20Repo/settings_repo.dart';
+import 'package:TinyTunes/Unity%20Ads%20Services/unity_ads_services.dart';
 import 'package:TinyTunes/res/Audio%20Background%20Services/audio_background_services.dart';
 import 'package:TinyTunes/res/app_urls/app_urls.dart';
 import 'package:TinyTunes/tiny_tunes_app.dart';
@@ -24,6 +25,7 @@ Future<void> main() async {
   );
   await CategoryDatabase.init();
   final AudioHandler audioHandler = await InitializeAudioHandler.init();
+  await InterstitialUnityAdsManager.init();
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
       .then((_) {
