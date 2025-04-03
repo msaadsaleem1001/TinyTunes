@@ -1,8 +1,8 @@
 
 class UnityConstants {
 
-  static const String androidGameId = '5659376';
-  static const String iosGameId = '5659377';
+  static const String androidGameId = 'Your Android ID';
+  static const String iosGameId = 'Your IOS game ID';
 
   static const String interstitialAndroidPlacement = 'Interstitial_Android';
   static const String interstitialIosPlacement = 'Interstitial_iOS';

@@ -14,10 +14,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: 'AIzaSyBD481hoWGins9sqRKRKjI5lra_0Nm8er0',
-          appId: '1:768237634576:android:62c4ed7400f43fcbe23695',
+          apiKey: 'Your API KEY',
+          appId: 'Your App ID',
           messagingSenderId: '',
-          projectId: 'tinytunes-70470'));
+          projectId: 'Your Project ID'));
   await FirebaseAnalyticsEvents.openAppEvent();
   await Supabase.initialize(
     url: AppUrls.supabaseUrl,

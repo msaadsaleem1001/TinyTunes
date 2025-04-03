@@ -2,6 +2,6 @@
 
 abstract class BaseApiServices{
 
-  // Future<dynamic> getApi(String endPoint);
+  Future<dynamic> getApi(String endPoint);
 
 }
